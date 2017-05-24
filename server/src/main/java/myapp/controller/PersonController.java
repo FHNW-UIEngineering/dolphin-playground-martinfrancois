@@ -1,18 +1,17 @@
 package myapp.controller;
 
-import java.util.List;
-
-import org.opendolphin.core.Dolphin;
-import org.opendolphin.core.server.DTO;
-import org.opendolphin.core.server.ServerPresentationModel;
-import org.opendolphin.core.server.comm.ActionRegistry;
-
 import myapp.presentationmodel.BasePmMixin;
 import myapp.presentationmodel.PMDescription;
 import myapp.presentationmodel.person.Person;
 import myapp.presentationmodel.person.PersonCommands;
 import myapp.service.SomeService;
 import myapp.util.Controller;
+import org.opendolphin.core.Dolphin;
+import org.opendolphin.core.server.DTO;
+import org.opendolphin.core.server.ServerPresentationModel;
+import org.opendolphin.core.server.comm.ActionRegistry;
+
+import java.util.List;
 
 /**
  * This is an example for an application specific controller.
@@ -52,6 +51,11 @@ class PersonController extends Controller implements BasePmMixin {
 
     @Override
     protected void setupValueChangedListener() {
+        personProxy.age.valueProperty().addListener((observable, oldValue, newValue) -> {
+            personProxy.isAdult.setValue(newValue.intValue() >= 18);
+
+        });
+
         getApplicationState().language.valueProperty().addListener((observable, oldValue, newValue) -> translate(personProxy, newValue));
     }
 
